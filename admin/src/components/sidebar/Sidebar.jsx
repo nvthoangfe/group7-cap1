@@ -40,12 +40,12 @@ export default function Sidebar() {
               <div className="item-sidebar">Bảng điều khiển</div>
             </div>
           </NavLink>
-          <NavLink to={`/store`} className="Link">
+          {/* <NavLink to={`/store`} className="Link">
             <div className="items-sidebar">
               <MdSpaceDashboard className="icon" />
               <div className="item-sidebar">Cửa hàng</div>
             </div>
-          </NavLink>
+          </NavLink> */}
           <NavLink to={`/customer`} className="Link">
             <div className="items-sidebar">
               <BsPeopleFill className="icon" />
@@ -88,12 +88,12 @@ export default function Sidebar() {
               <div className="item-sidebar">Đơn hàng</div>
             </div>
           </NavLink>
-          <NavLink to={`/post`} className="Link">
+          {/* <NavLink to={`/post`} className="Link">
             <div className="items-sidebar">
               <MdOutlinePostAdd className="icon" />
               <div className="item-sidebar">Bài viết</div>
             </div>
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/receipt" className="Link">
             <div className="items-sidebar">
               <BsReceipt className="icon" />
@@ -106,12 +106,12 @@ export default function Sidebar() {
               <div className="item-sidebar">Doanh thu</div>
             </div>
           </NavLink>
-          <NavLink to="/banner" className="Link">
+          {/* <NavLink to="/banner" className="Link">
             <div className="items-sidebar">
               <BsImages className="icon" />
               <div className="item-sidebar">Banner</div>
             </div>
-          </NavLink>
+          </NavLink> */}
         </div>
       ) : (
         <div className="bottom-sidebar">

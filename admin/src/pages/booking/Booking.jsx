@@ -72,7 +72,7 @@ export default function Booking() {
   const end = `${current.getFullYear()}-${current.getMonth() + 1}-30`;
 
   const FetchDataAfterDelete = async () => {
-    setStatusBooking('pending')
+    setStatusBooking("pending");
     const fetchDayCurrent = async () => {
       const data = {
         Date: currentDate,
@@ -121,14 +121,16 @@ export default function Booking() {
     //fetch data of current date
     const fetchDayCurrent = async () => {
       const data = {
-        Date: currentDate,
+        Start: start,
+        End: end,
         Status: StatusBooking,
       };
+
       const res = await axios.post(
-        "http://localhost:8800/api/appointment/",
+        "http://localhost:8800/api/appointment/time-range",
         data
       );
-      setDataDayCurrent(res.data.value);
+      setDataCurrentMonth(res.data.value);
     };
     fetchDayCurrent();
   }, [StatusBooking]);
@@ -197,16 +199,13 @@ export default function Booking() {
   };
 
   const Accept = ({ params }) => {
-    const AcceptBooking = async (
-      idAppointment,
-    ) => {
+    const AcceptBooking = async (idAppointment) => {
       const data = {
-        Status: 'accept',
+        Status: "accept",
       };
       try {
         const res = await axios.put(
-          "http://localhost:8800/api/appointment/update/" +
-          idAppointment,
+          "http://localhost:8800/api/appointment/update/" + idAppointment,
           data
         );
         toast.success("Xác nhận thành công");
@@ -237,15 +236,13 @@ export default function Booking() {
   };
 
   const Denied = ({ params }) => {
-    const DeniedeHandle = async (
-      idAppointment) => {
+    const DeniedeHandle = async (idAppointment) => {
       const data = {
-        Status: 'denied',
+        Status: "denied",
       };
       try {
         const res = await axios.put(
-          "http://localhost:8800/api/appointment/update/" +
-          idAppointment,
+          "http://localhost:8800/api/appointment/update/" + idAppointment,
           data
         );
         toast.success("Từ chối hẹn thành công");
@@ -260,9 +257,7 @@ export default function Booking() {
           className="button-delete"
           onClick={() => {
             if (window.confirm("Bạn xác nhận từ chối cuộc hẹn ?"))
-              DeniedeHandle(
-                params.row._id,
-              );
+              DeniedeHandle(params.row._id);
           }}
         >
           <FaBan className="icon-delete" />
@@ -290,7 +285,7 @@ export default function Booking() {
       try {
         const res = await axios.put(
           "http://localhost:8800/api/appointment/update-cancel/" +
-          idAppointment,
+            idAppointment,
           data
         );
         toast.success("Hủy cuộc hẹn thành công");
@@ -319,7 +314,9 @@ export default function Booking() {
       </div>
     );
   };
-
+  useEffect(() => {
+    setStatusBooking("pending");
+  }, []);
   const columns = useMemo(
     () => [
       {
@@ -344,7 +341,15 @@ export default function Booking() {
         field: "Status",
         headerName: "Trạng thái",
         width: 90,
-        renderCell: (params) => <p>{params?.row?.Status === 'accept' ? "Đã xác nhận" : (params?.row.Status === 'denied' ? 'Đã từ chối' : 'Chờ xử lý')}</p>
+        renderCell: (params) => (
+          <p>
+            {params?.row?.Status === "accept"
+              ? "Đã xác nhận"
+              : params?.row.Status === "denied"
+              ? "Đã từ chối"
+              : "Chờ xử lý"}
+          </p>
+        ),
       },
       {
         field: "date",
@@ -361,7 +366,9 @@ export default function Booking() {
         field: "Services",
         headerName: "Dịch vụ",
         renderCell: (params) => {
-          const servicesArray = Array.isArray(params?.row?.Services) ? params.row.Services : [];
+          const servicesArray = Array.isArray(params?.row?.Services)
+            ? params.row.Services
+            : [];
           return (
             <div className="service-list">
               {servicesArray.length > 0 ? (
@@ -384,20 +391,26 @@ export default function Booking() {
         width: 80,
         headerName: "Chấp nhận",
         type: "actions",
-        renderCell: (params) => <>
-          {params.row.Status !== 'accept' &&
-            <Accept   {...{ params, rowId, setRowId }} />}
-        </>,
+        renderCell: (params) => (
+          <>
+            {params.row.Status !== "accept" && (
+              <Accept {...{ params, rowId, setRowId }} />
+            )}
+          </>
+        ),
       },
       {
         field: "Denied",
         width: 80,
         headerName: "Từ chối",
         type: "actions",
-        renderCell: (params) => <>
-          {params.row.Status !== 'denied' &&
-            <Denied   {...{ params, rowId, setRowId }} />}
-        </>,
+        renderCell: (params) => (
+          <>
+            {params.row.Status !== "denied" && (
+              <Denied {...{ params, rowId, setRowId }} />
+            )}
+          </>
+        ),
       },
       // {
       //   field: "Cancel",
@@ -412,18 +425,18 @@ export default function Booking() {
 
   const StatusBookingOptions = [
     {
-      label: 'Chờ xử lý',
-      value: 'pending'
+      label: "Chờ xử lý",
+      value: "pending",
     },
     {
-      label: 'Đã xác nhận',
-      value: 'accept',
+      label: "Đã xác nhận",
+      value: "accept",
     },
     {
-      label: 'Đã từ chối',
-      value: 'denied'
-    }
-  ]
+      label: "Đã từ chối",
+      value: "denied",
+    },
+  ];
   return (
     <div className="container">
       <div className="left-container">
@@ -460,7 +473,7 @@ export default function Booking() {
                     </option>
                   ))}
                 </select>
-                {step1 ? (
+                {/* {step1 ? (
                   <React.Fragment>
                     <button
                       className="button-action"
@@ -551,16 +564,16 @@ export default function Booking() {
                       onChange={DateEndHandle}
                     ></input>
                   </React.Fragment>
-                )}
+                )} */}
               </div>
             </div>
             <div className="charts-container">
               {step1 ? (
                 <>
-                  {dataDayCurrent.length > 0 ? (
+                  {dataCurrentMonth.length > 0 ? (
                     <TableUser
                       column={columns}
-                      row={dataDayCurrent}
+                      row={dataCurrentMonth}
                       rowId={rowId}
                       setRowId={setRowId}
                     />
@@ -573,10 +586,10 @@ export default function Booking() {
               ) : null}
               {step2 ? (
                 <>
-                  {dataDayPrevious.length > 0 ? (
+                  {dataCurrentMonth.length > 0 ? (
                     <TableUser
                       column={columns}
-                      row={dataDayPrevious}
+                      row={dataCurrentMonth}
                       rowId={rowId}
                       setRowId={setRowId}
                     />
