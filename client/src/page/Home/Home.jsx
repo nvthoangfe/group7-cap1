@@ -10,9 +10,18 @@ import ReactPlayer from "react-player";
 import Scroll from "../../components/ScrollToTop/Scroll";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import { convertStringToNumber } from "../../utils/Utils";
 
 export default function Home() {
   const [service, setService] = useState([]);
+  const [productList, setProductList] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      const resp = await axios.get("http://localhost:8800/api/products");
+      setProductList(resp.data.value);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -122,13 +131,13 @@ export default function Home() {
             thấy căng thẳng, do đó nhu cầu đến spa để được thư giãn, cân bằng
             sức khỏe ngày càng tăng cao.
           </p>
-          <div className="s5-btn" style={{paddingTop: 10}}>
+          <div className="s5-btn" style={{ paddingTop: 10 }}>
             <NavLink
               type="submit"
               className="booking-btn"
               style={{ cursor: "pointer" }}
-              to='/appointment'
-            // onClick={submitHandle}
+              to="/appointment"
+              // onClick={submitHandle}
             >
               Đặt lịch hẹn
             </NavLink>
@@ -138,10 +147,10 @@ export default function Home() {
 
       <section className="section-4">
         <div className="service-container ">
-          {service.map((value, index) => (
+          {productList?.slice(0, 4).map((value, index) => (
             <>
               <Service
-                title={value.Name_Service}
+                title={value.Name}
                 p={value.Description}
                 image={value.Image}
               />
@@ -168,8 +177,8 @@ export default function Home() {
               type="submit"
               className="booking-btn"
               style={{ cursor: "pointer" }}
-              to='/appointment'
-            // onClick={submitHandle}
+              to="/appointment"
+              // onClick={submitHandle}
             >
               Đặt lịch hẹn
             </NavLink>
@@ -182,7 +191,7 @@ export default function Home() {
         />
       </section>
 
-         {/* <div className="telephone">
+      {/* <div className="telephone">
         <Telephone />
       </div> */}
       <Scroll />
