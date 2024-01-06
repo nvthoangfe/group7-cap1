@@ -10,6 +10,7 @@ import axios from "axios";
 import { Avatar } from "@mui/material";
 import { MdDeleteOutline, MdSaveAlt, MdViewHeadline } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { convertStringToNumber } from "../../utils/Utils";
 
 export default function Services() {
   const [dataService, setDataService] = useState([]);
@@ -334,8 +335,11 @@ export default function Services() {
       {
         field: "Price",
         headerName: "Giá cả",
-        width: 90,
+        width: 120,
         editable: true,
+        renderCell: (params) => (
+          <span>{convertStringToNumber(params?.row.Price)}</span>
+        ),
       },
       {
         field: "Description",

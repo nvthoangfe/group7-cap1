@@ -15,6 +15,7 @@ import { FaBan, FaCheckCircle } from "react-icons/fa";
 export default function Booking() {
   const [rowId, setRowId] = useState("");
   const [StatusBooking, setStatusBooking] = useState();
+  const [date, setDate] = useState();
   const current = new Date();
   // current date
   const currentDate = moment(new Date()).format("yyyy-MM-DD");
@@ -70,7 +71,6 @@ export default function Booking() {
   const start = `${current.getFullYear()}-${current.getMonth() + 1}-01`;
 
   const end = `${current.getFullYear()}-${current.getMonth() + 1}-30`;
-
   const FetchDataAfterDelete = async () => {
     setStatusBooking("pending");
     const fetchDayCurrent = async () => {
@@ -118,11 +118,13 @@ export default function Booking() {
   };
 
   useEffect(() => {
+    setStatusBooking("pending");
+  }, []);
+  useEffect(() => {
     //fetch data of current date
     const fetchDayCurrent = async () => {
       const data = {
-        Start: start,
-        End: end,
+        Date: date && date !== "Invalid date" && date,
         Status: StatusBooking,
       };
 
@@ -130,49 +132,32 @@ export default function Booking() {
         "http://localhost:8800/api/appointment/time-range",
         data
       );
-      setDataCurrentMonth(res.data.value);
+      if (res.data.value) {
+        setDataCurrentMonth(res.data.value);
+      }
     };
     fetchDayCurrent();
-  }, [StatusBooking]);
+  }, [StatusBooking, date]);
 
-  useEffect(() => {
-    // fetch data for previous date
-    const fetchDatePrevious = async () => {
-      const data = {
-        Date: nextDate,
-        Status: StatusBooking,
-      };
+  // useEffect(() => {
+  //   // fetch data for previous date
+  //   const fetchDatePrevious = async () => {
+  //     const data = {
+  //       Date: nextDate,
+  //       Status: StatusBooking,
+  //     };
 
-      const res = await axios.post(
-        "http://localhost:8800/api/appointment/",
-        data
-      );
-      setDataDayPrevious(res.data.value);
-    };
-    fetchDatePrevious();
-  }, [StatusBooking]);
+  //     const res = await axios.post(
+  //       "http://localhost:8800/api/appointment/",
+  //       data
+  //     );
+  //     setDataDayPrevious(res.data.value);
+  //   };
+  //   fetchDatePrevious();
+  // }, [StatusBooking]);
 
-  useEffect(() => {
-    // fetch current month
-    const fetchCurrentMonth = async () => {
-      const data = {
-        Start: start,
-        End: end,
-        Status: StatusBooking,
-      };
-
-      const res = await axios.post(
-        "http://localhost:8800/api/appointment/time-range",
-        data
-      );
-
-      setDataCurrentMonth(res.data.value);
-    };
-    fetchCurrentMonth();
-  }, [StatusBooking]);
-
-  const DateStartHandle = async (e) => {
-    setDateStart(moment(new Date(e.target.value)).format("YYYY-MM-DD"));
+  const DateHandle = async (e) => {
+    setDate(moment(new Date(e.target.value)).format("YYYY-MM-DD"));
   };
 
   const DateEndHandle = async (e) => {
@@ -314,9 +299,7 @@ export default function Booking() {
       </div>
     );
   };
-  useEffect(() => {
-    setStatusBooking("pending");
-  }, []);
+
   const columns = useMemo(
     () => [
       {
@@ -463,7 +446,6 @@ export default function Booking() {
                 <select
                   name="Status"
                   value={StatusBooking}
-                  style={{ padding: 6 }}
                   className="select-service"
                   onChange={(e) => setStatusBooking(e.target.value)}
                 >
@@ -473,6 +455,13 @@ export default function Booking() {
                     </option>
                   ))}
                 </select>
+                <input
+                  type="date"
+                  className="input-date"
+                  // value={moment(dateEnd).format("yyyy-MM-DD")}
+                  onChange={DateHandle}
+                  style={{ backgroundColor: "#bf925b", color: "white" }}
+                ></input>
                 {/* {step1 ? (
                   <React.Fragment>
                     <button

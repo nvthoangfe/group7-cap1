@@ -46,13 +46,13 @@ export const DeleteCategory = async (req, res) => {
   const responseType = {};
   const service = req.body.Category;
   try {
-    try {
-      const services = await Service.deleteMany(service);
-    } catch (error) {
-      responseType.statusText = "Failed";
-      responseType.message = "Delete service Failed";
-      responseType.status = 500;
-    }
+    // try {
+    //   const services = await Service.deleteMany(service);
+    // } catch (error) {
+    //   responseType.statusText = "Failed";
+    //   responseType.message = "Delete service Failed";
+    //   responseType.status = 500;
+    // }
     const category = await Category.findByIdAndDelete(req.params.id);
     responseType.statusText = "Success";
     responseType.message = "Delete Successfully";
@@ -86,12 +86,10 @@ export const GetTitleCategory = async (req, res) => {
     const category = await Category.find();
     const length = category.length;
     let totalPrice = [];
-
     for (let i = 0; i < length; i++) {
       const price = category[i].Title;
       totalPrice.push(price);
     }
-
     responseType.message = "Get customer successfully";
     responseType.status = 200;
     responseType.value = totalPrice;

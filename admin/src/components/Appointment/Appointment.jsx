@@ -93,7 +93,6 @@ export default function Appointment() {
           searchWord.toLowerCase()
         );
       });
-
       if (searchWord === "") {
         setFilteredData([]);
       } else {
@@ -302,7 +301,6 @@ export default function Appointment() {
                             <span className="desc-booking">
                               {services.Description}
                             </span>
-
                             <button
                               className="button-choose"
                               onClick={() => {

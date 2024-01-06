@@ -54,7 +54,6 @@ export default function ModalSalary({ open }) {
     };
 
     console.log(data);
-
     try {
       const res = await axios.post(
         "http://localhost:8800/api/salary/add",
@@ -62,9 +61,9 @@ export default function ModalSalary({ open }) {
       );
       resetForm();
       if (res.data.status === 200) {
-        toast.success(res.data.message); /** Thành công */
+        toast.success(res.data.message);
       } else {
-        toast.error(res.data.message); /** Thất bại */
+        toast.error(res.data.message);
       }
     } catch (error) {
       toast.error("Tạo lương không thành công");

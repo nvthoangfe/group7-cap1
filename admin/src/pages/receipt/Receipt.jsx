@@ -14,6 +14,7 @@ import { BsSearch } from "react-icons/bs";
 import { useReactToPrint } from "react-to-print";
 import { AuthContext } from "../../context/AuthContext";
 import { MdDeleteOutline } from "react-icons/md";
+import { convertStringToNumber } from "../../utils/Utils";
 
 export default function Receipt() {
   const { user } = useContext(AuthContext);
@@ -21,7 +22,7 @@ export default function Receipt() {
   const [staff, setStaff] = useState([]);
   const [service, setService] = useState([]);
   const [nameStaff, setNameStaff] = useState("");
-  console.log("🚀 ~ file: Receipt.jsx:24 ~ Receipt ~ nameStaff:", nameStaff)
+  console.log("🚀 ~ file: Receipt.jsx:24 ~ Receipt ~ nameStaff:", nameStaff);
   const [discount, setDiscount] = useState();
   const [nameService, setNameService] = useState([]);
   const [telephone, setTelephone] = useState("");
@@ -216,9 +217,9 @@ export default function Receipt() {
   };
 
   const handleServices = async (name) => {
-    if (nameService.includes(name)){
-      return ;
-    }else{
+    if (nameService.includes(name)) {
+      return;
+    } else {
       setNameService([...nameService, name]);
     }
   };
@@ -365,7 +366,10 @@ export default function Receipt() {
       {
         field: "SumPrice",
         headerName: "Tổng giá",
-        width: 70,
+        width: 120,
+        renderCell: (params) => (
+          <span>{convertStringToNumber(params?.row.SumPrice)}</span>
+        ),
       },
       {
         field: "Discount",
@@ -375,7 +379,10 @@ export default function Receipt() {
       {
         field: "Total",
         headerName: "Tổng",
-        width: 70,
+        renderCell: (params) => (
+          <span>{convertStringToNumber(params?.row.Total)}</span>
+        ),
+        width: 120,
       },
 
       {
@@ -480,16 +487,20 @@ export default function Receipt() {
                       </div>
                       <div className="item-bill">
                         <span className="title-bill"> Tổng giá:</span>
-                        <span className="value-bill">{bill.SumPrice} </span>
+                        <span className="value-bill">
+                          {convertStringToNumber(bill.SumPrice)}{" "}
+                        </span>
                       </div>
                       <div className="item-bill">
                         <span className="title-bill">Giảm giá: </span>
-                        <span className="value-bill"> {bill.Discount} </span>
+                        <span className="value-bill"> {bill.Discount} %</span>
                       </div>
 
                       <div className="item-bill">
                         <span className="title-bill">Tổng: </span>
-                        <span className="value-bill">{bill.Total} </span>
+                        <span className="value-bill">
+                          {convertStringToNumber(bill.Total)}{" "}
+                        </span>
                       </div>
                       <div className="item-bill">
                         <span className="title-bill">Ngày: </span>
@@ -520,7 +531,7 @@ export default function Receipt() {
                       <span className="name-services-span">
                         {services.Name_Service}
                       </span>
-                      <span> {services.Price}</span>
+                      <span> {convertStringToNumber(services.Price)}</span>
                     </div>
                   ))}
                 </div>

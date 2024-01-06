@@ -173,18 +173,12 @@ export const GetByDateChoose = async (req, res) => {
 // add new appointment
 export const AddAppointment = async (req, res) => {
   const staffId = req.body.StaffId; // staff id
-  console.log(
-    "🚀 ~ file: Appointment.controller.js:176 ~ AddAppointment ~ staffId:",
-    staffId
-  );
+  console.log("🚀 ~ file: Appointment.controller.js:176 ~ AddAppointment ~ staffId:", staffId)
   const customerId = req.body.CustomerId; // Customer id
   const customerName = req.body.NameCustomer;
   const customerTelephone = req.body.TelephoneCustomer;
   const slotId = req.body.SlotId; // slot id
-  console.log(
-    "🚀 ~ file: Appointment.controller.js:181 ~ AddAppointment ~ slotId:",
-    slotId
-  );
+  console.log("🚀 ~ file: Appointment.controller.js:181 ~ AddAppointment ~ slotId:", slotId)
   const dateId = req.body.DateId;
   const email = req.body.Email;
   const status = "pending";
@@ -262,7 +256,7 @@ export const AddAppointment = async (req, res) => {
   // await transport.sendMail(mailOptions);
 };
 
-// update status for Appointment
+// update status for Appointment 
 export const UpdateStatusAppointment = async (req, res) => {
   const { id } = req.params;
   const { Status } = req.body;
@@ -271,7 +265,7 @@ export const UpdateStatusAppointment = async (req, res) => {
     const appointment = await Appointment.findById(id);
     // Kiểm tra xem cuộc hẹn có tồn tại không
     if (!appointment) {
-      return res.status(404).json({ error: "Không tìm thấy cuộc hẹn" });
+      return res.status(404).json({ error: 'Không tìm thấy cuộc hẹn' });
     }
     // Cập nhật trạng thái mới
     appointment.Status = Status;
@@ -279,10 +273,11 @@ export const UpdateStatusAppointment = async (req, res) => {
     await appointment.save();
     return res.status(200).json(appointment);
   } catch (error) {
-    console.error("Lỗi khi cập nhật trạng thái:", error.message);
-    return res.status(500).json({ error: "Lỗi khi cập nhật trạng thái" });
+    console.error('Lỗi khi cập nhật trạng thái:', error.message);
+    return res.status(500).json({ error: 'Lỗi khi cập nhật trạng thái' });
   }
 };
+
 
 // update information of Appointment
 // for staff
@@ -540,25 +535,31 @@ export const GetAllAppointmentMatchPending = async (req, res) => {
 // get all appointment with status pending
 export const GetAllAppointmentMatchPendingWithRangeTime = async (req, res) => {
   const responseType = {};
-  const start = req.body.Start;
-  const end = req.body.End;
-  const StatusBooking = req.body.Status;
+  const statusBooking = req.body.Status;
 
   try {
-    const appointment = await Appointment.aggregate([
+    const matchConditions = [{ Status: statusBooking }];
+
+    if (req.body.Date) {
+      matchConditions.push({ date: (req.body.Date) });
+    }
+
+    const appointments = await Appointment.aggregate([
       {
         $match: {
-          $and: [{ Status: StatusBooking }],
+          $and: matchConditions,
         },
       },
     ]);
+
     responseType.message = "Get appointment successfully";
     responseType.status = 200;
-    responseType.value = appointment;
+    responseType.value = appointments;
   } catch (error) {
     responseType.message = "Get appointment failed";
     responseType.status = 500;
   }
+
   res.json(responseType);
 };
 
