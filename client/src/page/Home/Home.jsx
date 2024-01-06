@@ -146,10 +146,17 @@ export default function Home() {
       </section>
 
       <section className="section-4">
+        <p
+          className="text-title"
+          style={{ width: "100%", textAlign: "center" }}
+        >
+          Sản phẩm mới
+        </p>
         <div className="service-container ">
-          {productList?.slice(0, 4).map((value, index) => (
+          {productList?.slice(0, 4).map((value) => (
             <>
               <Service
+                id={value._id}
                 title={value.Name}
                 p={value.Description}
                 image={value.Image}

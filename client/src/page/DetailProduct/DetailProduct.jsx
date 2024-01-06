@@ -25,8 +25,10 @@ export default function DetailProduct() {
       const resp = await axios.get("http://localhost:8800/api/products");
       setProductList(resp.data.value);
     };
+    window.scroll(0,0)
     fetchData();
   }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,9 +87,6 @@ export default function DetailProduct() {
             );
           })}
         </div>
-      </div>
-      <div className="telephone">
-        <Telephone />
       </div>
       <Scroll />
       <Footer />

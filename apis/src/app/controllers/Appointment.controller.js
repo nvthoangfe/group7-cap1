@@ -540,25 +540,31 @@ export const GetAllAppointmentMatchPending = async (req, res) => {
 // get all appointment with status pending
 export const GetAllAppointmentMatchPendingWithRangeTime = async (req, res) => {
   const responseType = {};
-  const start = req.body.Start;
-  const end = req.body.End;
-  const StatusBooking = req.body.Status;
+  const statusBooking = req.body.Status;
 
   try {
-    const appointment = await Appointment.aggregate([
+    const matchConditions = [{ Status: statusBooking }];
+
+    if (req.body.Date) {
+      matchConditions.push({ date: req.body.Date });
+    }
+
+    const appointments = await Appointment.aggregate([
       {
         $match: {
-          $and: [{ Status: StatusBooking }],
+          $and: matchConditions,
         },
       },
     ]);
+
     responseType.message = "Get appointment successfully";
     responseType.status = 200;
-    responseType.value = appointment;
+    responseType.value = appointments;
   } catch (error) {
     responseType.message = "Get appointment failed";
     responseType.status = 500;
   }
+
   res.json(responseType);
 };
 

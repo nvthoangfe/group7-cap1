@@ -51,13 +51,12 @@ export default function Cart() {
           </div>
         </div>
       </section>
-      <div
-        className="single-container"
-        style={{ padding: "5% 10%", backgroundColor: "#fff" }}
-      >
-        <ProductCards />
+      <div className="single-container" style={{ padding: '5% 10%', backgroundColor: '#fff'}}>
+          <ProductCards/>
       </div>
-
+         {/* <div className="telephone">
+        <Telephone />
+      </div> */}
       <Scroll />
       <Footer />
     </div>

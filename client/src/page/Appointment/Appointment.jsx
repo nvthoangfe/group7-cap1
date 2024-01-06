@@ -297,7 +297,7 @@ export default function Appointment() {
                             }}
                             style={{
                               backgroundColor:
-                                check === index ? "#bf925b" : "white",
+                                check === index ? "#527853" : "white",
                               color: check === index ? "white" : "black",
                             }}
                           >
