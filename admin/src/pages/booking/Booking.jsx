@@ -124,7 +124,47 @@ export default function Booking() {
     //fetch data of current date
     const fetchDayCurrent = async () => {
       const data = {
+<<<<<<< HEAD
         Date: date && date !== "Invalid date" && date,
+=======
+        Start: start,
+        End: end,
+        Status: StatusBooking,
+      };
+
+      const res = await axios.post(
+        "http://localhost:8800/api/appointment/time-range",
+        data
+      );
+      setDataCurrentMonth(res.data.value);
+    };
+    fetchDayCurrent();
+  }, [StatusBooking]);
+
+  useEffect(() => {
+    // fetch data for previous date
+    const fetchDatePrevious = async () => {
+      const data = {
+        Date: nextDate,
+        Status: StatusBooking,
+      };
+
+      const res = await axios.post(
+        "http://localhost:8800/api/appointment/",
+        data
+      );
+      setDataDayPrevious(res.data.value);
+    };
+    fetchDatePrevious();
+  }, [StatusBooking]);
+
+  useEffect(() => {
+    // fetch current month
+    const fetchCurrentMonth = async () => {
+      const data = {
+        Start: start,
+        End: end,
+>>>>>>> 89fb3b045a3506973a269934fe01d0a45871fc2d
         Status: StatusBooking,
       };
 
@@ -299,7 +339,9 @@ export default function Booking() {
       </div>
     );
   };
-
+  useEffect(() => {
+    setStatusBooking("pending");
+  }, []);
   const columns = useMemo(
     () => [
       {

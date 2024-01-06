@@ -91,7 +91,7 @@ export default function Appointment() {
       console.log(res.data);
       setSlotArray(res.data.slots);
       setDateId(res.data._id);
-    } catch (error) { }
+    } catch (error) {}
   };
   const history = useNavigate();
 
@@ -151,20 +151,19 @@ export default function Appointment() {
               <span className="title-booking"> 1. Chọn dịch vụ </span>
               {selectedServices?.length > 0 &&
                 selectedServices?.map((item) => (
-                  <div className="item-booking" >
+                  <div className="item-booking">
                     <span className="icon-booking">
                       <GiLipstick />
                     </span>
-                    <div
-                      className="input-booking choose"
-
-                    >
-                      <span>{item ?? ''}</span>
+                    <div className="input-booking choose">
+                      <span>{item ?? ""}</span>
                     </div>
-                    <span className="icon-booking"
+                    <span
+                      className="icon-booking"
                       onClick={() => {
                         deleteService(item);
-                      }}>
+                      }}
+                    >
                       <MdDelete />
                     </span>
                   </div>
@@ -342,7 +341,7 @@ export default function Appointment() {
         </div>
       )}
       <Scroll />
-      <Footer/>
+      <Footer />
     </div>
   );
 }
