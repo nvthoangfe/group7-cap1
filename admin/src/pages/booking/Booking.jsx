@@ -299,7 +299,9 @@ export default function Booking() {
       </div>
     );
   };
-
+  useEffect(() => {
+    setStatusBooking("pending");
+  }, []);
   const columns = useMemo(
     () => [
       {
